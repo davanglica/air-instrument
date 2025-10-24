@@ -1,1 +1,6 @@
-.venv/
+# Virtual Environment
+.venv
+venv/
+env/
+air-intrument-venv/.venv/
+

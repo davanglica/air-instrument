@@ -1,0 +1,10 @@
+numpy
+joblib
+scikit-learn
+pytube
+pygame
+moviepy
+mediapipe
+opencv-python
+pandas
+yt_dlp
