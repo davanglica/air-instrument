@@ -2,5 +2,5 @@
 .venv
 venv/
 env/
-air-instrument-venv/.venv/
+air-instrument-venv/
 
