@@ -3,7 +3,7 @@ import mediapipe as mp
 import numpy as np
 import pygame
 import os
-import tkinter as tk # Used to get your screen resolution automatically
+import tkinter as tk 
 
 # --- Configuration ---
 pygame.mixer.init()
@@ -27,7 +27,7 @@ for mode in MODES:
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-# --- GET SCREEN RESOLUTION AUTOMATICALLY ---
+# --- GET SCREEN RESOLUTION ---
 root = tk.Tk()
 WINDOW_W = root.winfo_screenwidth()
 WINDOW_H = root.winfo_screenheight()
@@ -35,12 +35,13 @@ root.destroy()
 
 # UI CONSTANTS
 BUTTON_Y = 20
-BUTTON_H = int(WINDOW_H * 0.08) # Dynamic Height (8% of screen)
-BUTTON_W = int(WINDOW_W * 0.10) # Dynamic Width (10% of screen)
+BUTTON_H = int(WINDOW_H * 0.08)
+BUTTON_W = int(WINDOW_W * 0.10)
 BUTTON_GAP = 15
 BUTTON_START_X = 20
 BUTTON_COLOR_OFF = (80, 80, 80)
 BUTTON_COLOR_ON = (0, 200, 0)
+EXIT_COLOR = (0, 0, 255) # Red for Exit
 TEXT_COLOR = (255, 255, 255)
 
 # Fretboard Constants
@@ -55,12 +56,17 @@ STRUM_COLOR = (255, 0, 0)
 
 current_mode = "major" 
 sound_val = 0 
+exit_hover_counter = 0 # Timer to prevent accidental exits
 
-# Create Dynamic Buttons
+# Create Buttons (Added EXIT button at the end)
 buttons = []
 for i, mode in enumerate(MODES):
     x = BUTTON_START_X + (i * (BUTTON_W + BUTTON_GAP))
-    buttons.append({"label": mode, "x": x, "y": BUTTON_Y, "w": BUTTON_W, "h": BUTTON_H, "mode": mode})
+    buttons.append({"label": mode, "x": x, "y": BUTTON_Y, "w": BUTTON_W, "h": BUTTON_H, "mode": mode, "type": "mode"})
+
+# Add EXIT Button (Far right of the button row)
+exit_x = BUTTON_START_X + (len(MODES) * (BUTTON_W + BUTTON_GAP)) + 50
+buttons.append({"label": "EXIT", "x": exit_x, "y": BUTTON_Y, "w": BUTTON_W, "h": BUTTON_H, "mode": "EXIT", "type": "exit"})
 
 cap = cv2.VideoCapture(0)
 
@@ -76,23 +82,17 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
 
         frame = cv2.flip(frame, 1)
         
-        # --- ZOOM TO FILL (Screen Resolution) ---
+        # --- ZOOM TO FILL ---
         h_orig, w_orig = frame.shape[:2]
-        
         scale_w = WINDOW_W / w_orig
         scale_h = WINDOW_H / h_orig
         scale = max(scale_w, scale_h)
-        
         new_w = int(w_orig * scale)
         new_h = int(h_orig * scale)
         frame_resized = cv2.resize(frame, (new_w, new_h))
-        
         start_x = (new_w - WINDOW_W) // 2
         start_y = (new_h - WINDOW_H) // 2
-        
         image = frame_resized[start_y:start_y+WINDOW_H, start_x:start_x+WINDOW_W]
-        
-        # Update dimensions
         h, w, c = image.shape 
         
         # Process Pose
@@ -104,22 +104,23 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         # Draw Buttons
         for btn in buttons:
-            color = BUTTON_COLOR_ON if current_mode == btn['mode'] else BUTTON_COLOR_OFF
+            if btn['type'] == 'exit':
+                color = EXIT_COLOR
+            else:
+                color = BUTTON_COLOR_ON if current_mode == btn['mode'] else BUTTON_COLOR_OFF
+            
             cv2.rectangle(image, (int(btn['x']), int(btn['y'])), (int(btn['x'] + btn['w']), int(btn['y'] + btn['h'])), color, -1)
             cv2.putText(image, btn['label'], (int(btn['x'] + 10), int(btn['y'] + (BUTTON_H/1.5))), cv2.FONT_HERSHEY_SIMPLEX, 0.6, TEXT_COLOR, 2)
 
         # Draw Fretboard
         cv2.rectangle(image, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (200, 200, 200), 2)
-        cv2.putText(image, "FRETBOARD AREA", (NECK_X_START, NECK_Y_START - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200,200,200), 1)
-
+        
         num_notes = len(NOTES)
         zone_width = NECK_WIDTH / num_notes
-        
         for i in range(num_notes):
             bx = int(NECK_X_START + (i * zone_width))
             if i > 0: 
                 cv2.line(image, (bx, NECK_Y_START), (bx, NECK_Y_START + NECK_HEIGHT), (150, 150, 150), 2)
-            
             label_x = int(bx + zone_width/2 - 10)
             label_y = int(NECK_Y_START + NECK_HEIGHT/2 + 10)
             cv2.putText(image, NOTES[i].upper(), (label_x, label_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 255, 100), 2)
@@ -140,7 +141,18 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if p_left_wrist[1] < (BUTTON_Y + BUTTON_H + 50): 
                 for btn in buttons:
                     if (btn['x'] < p_left_wrist[0] < btn['x'] + btn['w']):
-                        current_mode = btn['mode']
+                        if btn['type'] == 'exit':
+                            exit_hover_counter += 1
+                            cv2.putText(image, f"EXITING... {exit_hover_counter}", (int(w/2), int(h/2)), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
+                            if exit_hover_counter > 20: # Hover for ~1 second to exit
+                                cap.release()
+                                cv2.destroyAllWindows()
+                                exit()
+                        else:
+                            current_mode = btn['mode']
+                            exit_hover_counter = 0 # Reset exit timer if on other buttons
+            else:
+                exit_hover_counter = 0 # Reset if hand moves away
 
             # 2. Note Selection
             current_note_idx = -1
@@ -177,11 +189,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         except Exception as e:
             pass
 
-        # SHOW IMAGE IN FULLSCREEN WINDOW
         cv2.imshow(window_name, image)
         
-        # Press 'q' to quit
-        if cv2.waitKey(10) & 0xFF == ord('q'):
+        # EXIT KEYS: Press 'q' OR 'Esc' to quit
+        key = cv2.waitKey(10) & 0xFF
+        if key == ord('q') or key == 27: # 27 is the ESC key
             break
 
     cap.release()

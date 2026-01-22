@@ -8,3 +8,7 @@ mediapipe
 opencv-python
 pandas
 yt_dlp
+pyjlyrics
+requests
+beautifulsoup4
+customtkinter

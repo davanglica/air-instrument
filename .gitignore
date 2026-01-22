@@ -9,3 +9,5 @@ __pycache__/
 *.mp3
 *.wav
 .ipynb_checkpoints
+node_modules/
+search-function/
