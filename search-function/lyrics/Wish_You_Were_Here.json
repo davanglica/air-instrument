@@ -1,0 +1,70 @@
+{
+    "meta": {
+        "title": "Wish You Were Here",
+        "artist": "Pink Floyd",
+        "transition_time": 1.0,
+        "chords_used": ["C", "D", "Am", "G"]
+    },
+    "lyrics": [
+        {
+            "text": "So, so you think you can tell,",
+            "chords": {
+                "0": "C",
+                "25": "D"
+            }
+        },
+        {
+            "text": "Heaven from Hell, blue skies from pain.",
+            "chords": {
+                "0": "Am",
+                "26": "G"
+            }
+        },
+        {
+            "text": "Can you tell a green field from a cold steel rail,",
+            "chords": {
+                "15": "D",
+                "45": "C"
+            }
+        },
+        {
+            "text": "a smile from a veil, Do you think you can tell?",
+            "chords": {
+                "15": "Am",
+                "45": "G"
+            }
+        },
+        {
+            "text": "[Verse 2]",
+            "chords": {}
+        },
+        {
+            "text": "Did they get you to trade your heroes for ghosts,",
+            "chords": {
+                "25": "C",
+                "45": "D"
+            }
+        },
+        {
+            "text": "Hot ashes for trees, hot air for a cool breeze,",
+            "chords": {
+                "10": "Am",
+                "35": "G"
+            }
+        },
+        {
+            "text": "cold comfort for change, And did you exchange",
+            "chords": {
+                "15": "D",
+                "35": "C"
+            }
+        },
+        {
+            "text": "a walk on part in the war for a lead role in a cage?",
+            "chords": {
+                "20": "Am",
+                "45": "G"
+            }
+        }
+    ]
+}
