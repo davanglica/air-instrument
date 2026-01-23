@@ -35,7 +35,7 @@ class AirGuitarPage(ctk.CTkFrame):
         self.back_btn.pack(side="left")
 
         self.mode_label = ctk.CTkLabel(
-            header_frame, text="Free Play Mode", font=("HG丸ｺﾞｼｯｸM-PRO", 20, "bold"), text_color="#555"
+            header_frame, text="自由演奏モード", font=("HG丸ｺﾞｼｯｸM-PRO", 20, "bold"), text_color="#555"
         )
         self.mode_label.pack(side="left", padx=20)
 

@@ -26,10 +26,10 @@ class LyricGuitarPage(ctk.CTkFrame):
         self.prev_right_wrist = None
         self.SMOOTHING_FACTOR = 0.5
 
-        # --- HEADER (Fixed Height) ---
+        # --- HEADER ---
         header_frame = ctk.CTkFrame(self, fg_color="transparent", height=60)
         header_frame.pack(fill="x", padx=20, pady=(10, 0))
-        header_frame.pack_propagate(False) # Force height
+        header_frame.pack_propagate(False)
 
         arrow_path = os.path.join(self.controller.assets_dir, "arrow.png")
         try:
@@ -49,28 +49,27 @@ class LyricGuitarPage(ctk.CTkFrame):
         )
         self.title_label.pack(side="left", padx=20)
 
-        # --- LYRICS PANEL (Bottom, Fixed Height) ---
-        # We pack this FIRST with side="bottom" to ensure it stays visible
-        self.lyrics_frame = ctk.CTkFrame(self, fg_color="#FFF0E0", height=120)
-        self.lyrics_frame.pack(side="bottom", fill="x", padx=40, pady=(0, 20))
+        # --- LYRICS PANEL (Bottom) ---
+        self.lyrics_frame = ctk.CTkFrame(self, fg_color="#FFF0E0", height=100)
+        self.lyrics_frame.pack(side="bottom", fill="x", padx=20, pady=(0, 10))
         self.lyrics_frame.pack_propagate(False)
         
         self.text_container = ctk.CTkFrame(self.lyrics_frame, fg_color="transparent")
         self.text_container.pack(fill="both", expand=True)
 
         self.chord_display_label = ctk.CTkLabel(
-            self.text_container, text="", font=("Consolas", 32, "bold"), text_color="#FF4500", anchor="center"
+            self.text_container, text="", font=("Consolas", 20, "bold"), text_color="#FF4500", anchor="center"
         )
-        self.chord_display_label.pack(fill="x", pady=(5, 0))
+        self.chord_display_label.pack(fill="x", pady=(0, 0))
 
         self.lyric_display_label = ctk.CTkLabel(
-            self.text_container, text="Ready...", font=("Consolas", 24), text_color="#333", anchor="center"
+            self.text_container, text="Ready...", font=("Consolas", 18), text_color="#333", anchor="center"
         )
-        self.lyric_display_label.pack(fill="x", pady=(0, 5))
+        self.lyric_display_label.pack(fill="x", pady=(0, 0))
 
-        # --- CAMERA (Fills remaining space) ---
+        # --- CAMERA ---
         self.cam_container = ctk.CTkFrame(self, fg_color="black", corner_radius=0) 
-        self.cam_container.pack(side="top", fill="both", expand=True, padx=0, pady=(10, 10))
+        self.cam_container.pack(side="top", fill="both", expand=True, padx=0, pady=(5, 5))
 
         self.cam_label = ctk.CTkLabel(self.cam_container, text="", corner_radius=0)
         self.cam_label.pack(fill="both", expand=True, padx=0, pady=0)
@@ -124,7 +123,7 @@ class LyricGuitarPage(ctk.CTkFrame):
         self.transition_delay = int(t_time * 1000)
 
         title = data.get('meta', {}).get('title', 'Unknown')
-        self.title_label.configure(text=f"Playing: {title}")
+        self.title_label.configure(text=f"演奏中: {title}")
         
         chords_used = data.get('meta', {}).get('chords_used', [])
         self.active_song_chords = []
@@ -140,17 +139,20 @@ class LyricGuitarPage(ctk.CTkFrame):
         self.update_lyric_display()
 
     def format_chord_string(self, chords_dict, text_length):
-        buffer = [" "] * max(text_length, 40)
+        buffer_len = max(text_length + 5, 50)
+        buffer = [" "] * buffer_len
+        
         sorted_indices = sorted([int(k) for k in chords_dict.keys()])
         self.required_sequence = [chords_dict[str(k)] for k in sorted_indices]
         self.current_sequence_progress = 0 
         
         for idx_str, chord_name in chords_dict.items():
             idx = int(idx_str)
-            if idx < len(buffer):
+            if idx < buffer_len:
                 for i, char in enumerate(chord_name):
-                    if idx + i < len(buffer):
+                    if idx + i < buffer_len:
                         buffer[idx + i] = char
+        
         return "".join(buffer).rstrip()
 
     def update_lyric_display(self):
@@ -175,6 +177,7 @@ class LyricGuitarPage(ctk.CTkFrame):
 
     def check_chord_progression(self, played_chord_label):
         if self.is_transitioning or not self.required_sequence: return
+        
         if self.current_sequence_progress < len(self.required_sequence):
             expected_chord = self.required_sequence[self.current_sequence_progress]
             if played_chord_label == expected_chord:
@@ -238,28 +241,37 @@ class LyricGuitarPage(ctk.CTkFrame):
         
         target_w = self.cam_label.winfo_width()
         target_h = self.cam_label.winfo_height()
-        # Fallbacks to avoid div/0
         if target_w < 10: target_w = 800
         if target_h < 10: target_h = 600
 
         h_orig, w_orig = frame.shape[:2]
-        # Keep aspect ratio
-        scale = min(target_w / w_orig, target_h / h_orig) 
+        
+        # Center Crop Logic
+        scale_w = target_w / w_orig
+        scale_h = target_h / h_orig
+        scale = max(scale_w, scale_h) 
+        
         new_w = int(w_orig * scale)
         new_h = int(h_orig * scale)
-        frame = cv2.resize(frame, (new_w, new_h))
+        resized_frame = cv2.resize(frame, (new_w, new_h))
         
-        # We process the resized frame directly
+        x_start = (new_w - target_w) // 2
+        y_start = (new_h - target_h) // 2
+        
+        frame = resized_frame[y_start:y_start+target_h, x_start:x_start+target_w]
         h, w, c = frame.shape 
 
-        # --- UPDATED DRAWING CONSTANTS ---
-        # Moving fretboard lower to avoid eyes (Y=0.7)
-        # Making it smaller (Height=0.2)
-        # Aligning Left (X=0.05) with 60% Width
-        NECK_Y_START = int(h * 0.70) 
-        NECK_HEIGHT = int(h * 0.20)
-        NECK_X_START = int(w * 0.05)
-        NECK_WIDTH = int(w * 0.60)
+        # --- DRAWING CONSTANTS ---
+        # FIX: Move Fretboard UP to align with Strum Line
+        # Strum Line is at 0.5
+        # Fretboard Start 0.42 + Height 0.16 = Ends at 0.58
+        # This puts the strum line right through the middle-bottom of the chords
+        NECK_Y_START = int(h * 0.42) 
+        NECK_HEIGHT = int(h * 0.16)
+        
+        FIXED_ZONE_WIDTH = int(w / 7)
+        active_start_x = int(w * 0.05)
+        
         STRUM_Y = int(h * 0.5)
 
         image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -267,29 +279,24 @@ class LyricGuitarPage(ctk.CTkFrame):
         results = self.pose.process(image_rgb)
         
         # --- DRAW FRETBOARD ---
-        cv2.rectangle(frame, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (240, 240, 240), -1) 
-        cv2.rectangle(frame, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (50, 50, 50), 2) 
-        
         num_chords = len(self.active_song_chords)
         
-        # Fixed Zone Width based on Left Aligned box
-        FIXED_ZONE_WIDTH = int(NECK_WIDTH / 4) # Show max 4-5 chords width
         if num_chords > 0:
-            actual_zone_width = int(NECK_WIDTH / num_chords)
-            # If we have too many chords, scale down, otherwise use fixed max size
+            actual_zone_width = int((w * 0.9) / num_chords)
             zone_width = min(FIXED_ZONE_WIDTH, actual_zone_width)
         else:
             zone_width = FIXED_ZONE_WIDTH
 
         for i in range(num_chords):
-            bx = int(NECK_X_START + (i * zone_width))
-            if i > 0: 
-                cv2.line(frame, (bx, NECK_Y_START), (bx, NECK_Y_START + NECK_HEIGHT), (100, 100, 100), 2)
+            bx = active_start_x + (i * zone_width)
+            
+            cv2.rectangle(frame, (bx, NECK_Y_START), (bx + zone_width, NECK_Y_START + NECK_HEIGHT), (240, 240, 240), -1)
+            cv2.rectangle(frame, (bx, NECK_Y_START), (bx + zone_width, NECK_Y_START + NECK_HEIGHT), (50, 50, 50), 2)
             
             chord_label = self.active_song_chords[i]['label']
             center_x = bx + zone_width/2
             center_y = NECK_Y_START + NECK_HEIGHT/2
-            self.draw_centered_text(frame, chord_label, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 1.0, (10, 10, 10), 2)
+            self.draw_centered_text(frame, chord_label, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 1.2, (10, 10, 10), 3)
 
         s_start = int(w * 0.7)
         cv2.line(frame, (s_start, STRUM_Y), (w, STRUM_Y), (0, 0, 255), 5)
@@ -304,16 +311,16 @@ class LyricGuitarPage(ctk.CTkFrame):
             self.prev_left_wrist = p_left_wrist
             self.prev_right_wrist = p_right_wrist
 
-            # Selection (Updated for Left Align)
+            # Selection
             current_chord_idx = -1
             if num_chords > 0 and (NECK_Y_START - 50) < p_left_wrist[1] < (NECK_Y_START + NECK_HEIGHT + 50):
-                rel_x = p_left_wrist[0] - NECK_X_START
+                rel_x = p_left_wrist[0] - active_start_x
                 if 0 <= rel_x <= (num_chords * zone_width):
                     current_chord_idx = int(rel_x // zone_width)
                     if current_chord_idx >= num_chords: current_chord_idx = num_chords - 1
 
             if current_chord_idx != -1:
-                active_x = int(NECK_X_START + (current_chord_idx * zone_width))
+                active_x = int(active_start_x + (current_chord_idx * zone_width))
                 overlay = frame.copy()
                 cv2.rectangle(overlay, (active_x, NECK_Y_START), (int(active_x + zone_width), NECK_Y_START + NECK_HEIGHT), (0, 255, 255), -1)
                 cv2.addWeighted(overlay, 0.4, frame, 0.6, 0, frame)
