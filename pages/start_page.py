@@ -3,13 +3,30 @@ import customtkinter as ctk
 class StartPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="#FFF0E0")
+        self.controller = controller
         
-        self.label = ctk.CTkLabel(self, text="どこでも楽器", text_color="#D2691E", font=("HG丸ｺﾞｼｯｸM-PRO", 80, "bold"))
+        # 1. Main Title
+        self.label = ctk.CTkLabel(
+            self, text="どこでも楽器", 
+            text_color="#D2691E", 
+            font=("HG丸ｺﾞｼｯｸM-PRO", 80, "bold")
+        )
         self.label.pack(expand=True)
 
-        self.start_btn = ctk.CTkButton(
-            self, text="画面をタッチしてスタート", fg_color="transparent", text_color="#D2691E",
-            hover_color="#FFE4C4", font=("HG丸ｺﾞｼｯｸM-PRO", 20),
-            command=lambda: controller.show_frame("MainMenu")
+        # 2. Instruction Text (Label, not a button)
+        self.sub_label = ctk.CTkLabel(
+            self, text="画面をタッチしてスタート", 
+            text_color="#D2691E",
+            font=("HG丸ｺﾞｼｯｸM-PRO", 20)
         )
-        self.start_btn.pack(pady=50)
+        self.sub_label.pack(pady=50)
+
+        # 3. MAKE EVERYTHING CLICKABLE
+        # Bind the click event to the Frame (background)
+        self.bind("<Button-1>", self.start_app)
+        # Bind the click event to the Labels (text)
+        self.label.bind("<Button-1>", self.start_app)
+        self.sub_label.bind("<Button-1>", self.start_app)
+
+    def start_app(self, event):
+        self.controller.show_frame("MainMenu")
