@@ -5,9 +5,5 @@ env/
 air-instrument-venv/
 .vscode/
 __pycache__/
-*.mp4
-*.mp3
-*.wav
 .ipynb_checkpoints
-node_modules/
 search-function/

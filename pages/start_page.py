@@ -5,26 +5,22 @@ class StartPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="#FFF0E0")
         self.controller = controller
         
-        # 1. Main Title
+        # FIX 5: Reduce Title Font (80 -> 50)
         self.label = ctk.CTkLabel(
             self, text="どこでも楽器", 
             text_color="#D2691E", 
-            font=("HG丸ｺﾞｼｯｸM-PRO", 80, "bold")
+            font=("HG丸ｺﾞｼｯｸM-PRO", 50, "bold") 
         )
         self.label.pack(expand=True)
 
-        # 2. Instruction Text (Label, not a button)
         self.sub_label = ctk.CTkLabel(
             self, text="画面をタッチしてスタート", 
             text_color="#D2691E",
-            font=("HG丸ｺﾞｼｯｸM-PRO", 20)
+            font=("HG丸ｺﾞｼｯｸM-PRO", 18)
         )
-        self.sub_label.pack(pady=50)
+        self.sub_label.pack(pady=30)
 
-        # 3. MAKE EVERYTHING CLICKABLE
-        # Bind the click event to the Frame (background)
         self.bind("<Button-1>", self.start_app)
-        # Bind the click event to the Labels (text)
         self.label.bind("<Button-1>", self.start_app)
         self.sub_label.bind("<Button-1>", self.start_app)
 

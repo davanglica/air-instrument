@@ -2,7 +2,6 @@
 import os
 import pygame
 
-# Import all pages
 from pages.start_page import StartPage
 from pages.main_menu import MainMenu
 from pages.air_guitar_page import AirGuitarPage
@@ -13,8 +12,20 @@ class MusicApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+        # --- FIX 1: FORCE SCALING TO 100% ---
+        # This prevents the "huge font" issue on small screens
+        ctk.set_widget_scaling(1.0)
+        ctk.set_window_scaling(1.0)
+
         self.title("どこでも楽器")
-        self.geometry("1000x700")
+        
+        # --- FIX 2: MATCH SCREEN RESOLUTION ---
+        # 1024x600 is your exact screen size
+        self.geometry("1024x600")
+        
+        # Optional: Uncomment this if you want to force full screen without window bars
+        # self.attributes('-fullscreen', True) 
+
         ctk.set_appearance_mode("light")
 
         # --- PATH SETUP ---
@@ -32,7 +43,6 @@ class MusicApp(ctk.CTk):
         self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        # Register ALL pages here
         for F in (StartPage, MainMenu, AirGuitarPage, SongSelectionPage, LyricGuitarPage):
             page_name = F.__name__
             frame = F(parent=self.container, controller=self)
@@ -42,19 +52,16 @@ class MusicApp(ctk.CTk):
         self.show_frame("StartPage")
 
     def show_frame(self, page_name):
-        # 1. Stop Camera on ALL pages first to be safe
         if "AirGuitarPage" in self.frames:
             self.frames["AirGuitarPage"].stop_camera()
         if "LyricGuitarPage" in self.frames:
             self.frames["LyricGuitarPage"].stop_camera()
 
-        # 2. Start Camera ONLY if entering a camera page
         if page_name == "AirGuitarPage":
             self.frames["AirGuitarPage"].start_camera()
         elif page_name == "LyricGuitarPage":
             self.frames["LyricGuitarPage"].start_camera()
 
-        # 3. Raise Frame
         frame = self.frames[page_name]
         frame.tkraise()
 
