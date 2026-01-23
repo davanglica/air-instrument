@@ -26,9 +26,10 @@ class LyricGuitarPage(ctk.CTkFrame):
         self.prev_right_wrist = None
         self.SMOOTHING_FACTOR = 0.5
 
-        # Header
-        header_frame = ctk.CTkFrame(self, fg_color="transparent")
-        header_frame.pack(fill="x", padx=20, pady=10)
+        # --- HEADER (Fixed Height) ---
+        header_frame = ctk.CTkFrame(self, fg_color="transparent", height=60)
+        header_frame.pack(fill="x", padx=20, pady=(10, 0))
+        header_frame.pack_propagate(False) # Force height
 
         arrow_path = os.path.join(self.controller.assets_dir, "arrow.png")
         try:
@@ -48,16 +49,11 @@ class LyricGuitarPage(ctk.CTkFrame):
         )
         self.title_label.pack(side="left", padx=20)
 
-        # Camera
-        self.cam_container = ctk.CTkFrame(self, fg_color="black", corner_radius=0) 
-        self.cam_container.pack(fill="both", expand=True, padx=0, pady=(10, 0))
-
-        self.cam_label = ctk.CTkLabel(self.cam_container, text="", corner_radius=0)
-        self.cam_label.pack(fill="both", expand=True, padx=0, pady=0)
-
-        # Lyrics Panel
-        self.lyrics_frame = ctk.CTkFrame(self, fg_color="#FFF0E0", height=150)
-        self.lyrics_frame.pack(fill="x", padx=40, pady=(0, 20))
+        # --- LYRICS PANEL (Bottom, Fixed Height) ---
+        # We pack this FIRST with side="bottom" to ensure it stays visible
+        self.lyrics_frame = ctk.CTkFrame(self, fg_color="#FFF0E0", height=120)
+        self.lyrics_frame.pack(side="bottom", fill="x", padx=40, pady=(0, 20))
+        self.lyrics_frame.pack_propagate(False)
         
         self.text_container = ctk.CTkFrame(self.lyrics_frame, fg_color="transparent")
         self.text_container.pack(fill="both", expand=True)
@@ -72,11 +68,17 @@ class LyricGuitarPage(ctk.CTkFrame):
         )
         self.lyric_display_label.pack(fill="x", pady=(0, 5))
 
+        # --- CAMERA (Fills remaining space) ---
+        self.cam_container = ctk.CTkFrame(self, fg_color="black", corner_radius=0) 
+        self.cam_container.pack(side="top", fill="both", expand=True, padx=0, pady=(10, 10))
+
+        self.cam_label = ctk.CTkLabel(self.cam_container, text="", corner_radius=0)
+        self.cam_label.pack(fill="both", expand=True, padx=0, pady=0)
+
         # CV Setup
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
         
-        # --- ADDED "7" TO MODES ---
         self.MODES = ["major", "minor", "m7", "maj7", "7"] 
         self.NOTES = ["c", "d", "e", "f", "g", "a", "b"]
         self.sounds = {}
@@ -99,12 +101,11 @@ class LyricGuitarPage(ctk.CTkFrame):
         root_str = match.group(1).lower()
         suffix = match.group(2)
         
-        # --- IMPROVED 7 DETECTION ---
         mode = "major"
         if suffix == "m": mode = "minor"
         elif suffix == "m7": mode = "m7"
         elif suffix == "maj7": mode = "maj7"
-        elif suffix == "7": mode = "7"  # Maps G7 -> mode="7"
+        elif suffix == "7": mode = "7"
         
         if len(root_str) > 1: root_str = root_str[0] 
         return {"label": chord_name, "root": root_str, "mode": mode}
@@ -237,58 +238,58 @@ class LyricGuitarPage(ctk.CTkFrame):
         
         target_w = self.cam_label.winfo_width()
         target_h = self.cam_label.winfo_height()
+        # Fallbacks to avoid div/0
         if target_w < 10: target_w = 800
         if target_h < 10: target_h = 600
 
         h_orig, w_orig = frame.shape[:2]
-        scale = max(target_w / w_orig, target_h / h_orig)
+        # Keep aspect ratio
+        scale = min(target_w / w_orig, target_h / h_orig) 
         new_w = int(w_orig * scale)
         new_h = int(h_orig * scale)
         frame = cv2.resize(frame, (new_w, new_h))
-        start_x = (new_w - target_w) // 2
-        start_y = (new_h - target_h) // 2
-        frame = frame[start_y:start_y+target_h, start_x:start_x+target_w]
         
+        # We process the resized frame directly
         h, w, c = frame.shape 
 
-        NECK_Y_START = int(h * 0.4)
-        NECK_HEIGHT = int(h * 0.25)
+        # --- UPDATED DRAWING CONSTANTS ---
+        # Moving fretboard lower to avoid eyes (Y=0.7)
+        # Making it smaller (Height=0.2)
+        # Aligning Left (X=0.05) with 60% Width
+        NECK_Y_START = int(h * 0.70) 
+        NECK_HEIGHT = int(h * 0.20)
         NECK_X_START = int(w * 0.05)
-        NECK_WIDTH = int(w * 0.55)
+        NECK_WIDTH = int(w * 0.60)
         STRUM_Y = int(h * 0.5)
 
         image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image_rgb.flags.writeable = False
         results = self.pose.process(image_rgb)
         
-        # --- DRAW FRETBOARD (UNIFORM SIZING) ---
+        # --- DRAW FRETBOARD ---
         cv2.rectangle(frame, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (240, 240, 240), -1) 
         cv2.rectangle(frame, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (50, 50, 50), 2) 
         
         num_chords = len(self.active_song_chords)
         
-        # --- NEW LOGIC: UNIFORM WIDTH ---
-        # Instead of dividing total width by num_chords, we use a FIXED width
-        # similar to the free play mode (e.g. ~1/7th of total width)
-        FIXED_ZONE_WIDTH = int(NECK_WIDTH / 7) # Standard size based on 7 notes
-        
-        # Calculate Total Width of active chords area
-        total_active_width = num_chords * FIXED_ZONE_WIDTH
-        
-        # Center the active area
-        active_start_x = NECK_X_START + (NECK_WIDTH - total_active_width) // 2
-        
+        # Fixed Zone Width based on Left Aligned box
+        FIXED_ZONE_WIDTH = int(NECK_WIDTH / 4) # Show max 4-5 chords width
+        if num_chords > 0:
+            actual_zone_width = int(NECK_WIDTH / num_chords)
+            # If we have too many chords, scale down, otherwise use fixed max size
+            zone_width = min(FIXED_ZONE_WIDTH, actual_zone_width)
+        else:
+            zone_width = FIXED_ZONE_WIDTH
+
         for i in range(num_chords):
-            bx = int(active_start_x + (i * FIXED_ZONE_WIDTH))
-            
-            # Draw Divider (Skip first one)
+            bx = int(NECK_X_START + (i * zone_width))
             if i > 0: 
                 cv2.line(frame, (bx, NECK_Y_START), (bx, NECK_Y_START + NECK_HEIGHT), (100, 100, 100), 2)
             
             chord_label = self.active_song_chords[i]['label']
-            center_x = bx + FIXED_ZONE_WIDTH/2
+            center_x = bx + zone_width/2
             center_y = NECK_Y_START + NECK_HEIGHT/2
-            self.draw_centered_text(frame, chord_label, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 1.2, (10, 10, 10), 3)
+            self.draw_centered_text(frame, chord_label, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 1.0, (10, 10, 10), 2)
 
         s_start = int(w * 0.7)
         cv2.line(frame, (s_start, STRUM_Y), (w, STRUM_Y), (0, 0, 255), 5)
@@ -303,19 +304,18 @@ class LyricGuitarPage(ctk.CTkFrame):
             self.prev_left_wrist = p_left_wrist
             self.prev_right_wrist = p_right_wrist
 
-            # Selection Logic (Updated for Uniform Width)
+            # Selection (Updated for Left Align)
             current_chord_idx = -1
             if num_chords > 0 and (NECK_Y_START - 50) < p_left_wrist[1] < (NECK_Y_START + NECK_HEIGHT + 50):
-                # Calculate relative to the CENTERED start position
-                rel_x = p_left_wrist[0] - active_start_x
-                if 0 <= rel_x <= total_active_width:
-                    current_chord_idx = int(rel_x // FIXED_ZONE_WIDTH)
+                rel_x = p_left_wrist[0] - NECK_X_START
+                if 0 <= rel_x <= (num_chords * zone_width):
+                    current_chord_idx = int(rel_x // zone_width)
                     if current_chord_idx >= num_chords: current_chord_idx = num_chords - 1
 
             if current_chord_idx != -1:
-                active_x = int(active_start_x + (current_chord_idx * FIXED_ZONE_WIDTH))
+                active_x = int(NECK_X_START + (current_chord_idx * zone_width))
                 overlay = frame.copy()
-                cv2.rectangle(overlay, (active_x, NECK_Y_START), (int(active_x + FIXED_ZONE_WIDTH), NECK_Y_START + NECK_HEIGHT), (0, 255, 255), -1)
+                cv2.rectangle(overlay, (active_x, NECK_Y_START), (int(active_x + zone_width), NECK_Y_START + NECK_HEIGHT), (0, 255, 255), -1)
                 cv2.addWeighted(overlay, 0.4, frame, 0.6, 0, frame)
 
             # Strumming

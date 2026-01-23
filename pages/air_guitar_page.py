@@ -12,7 +12,6 @@ class AirGuitarPage(ctk.CTkFrame):
         self.cap = None
         self.is_running = False
 
-        # Smoothing
         self.prev_left_wrist = None
         self.prev_right_wrist = None
         self.SMOOTHING_FACTOR = 0.5 
@@ -21,7 +20,7 @@ class AirGuitarPage(ctk.CTkFrame):
         header_frame = ctk.CTkFrame(self, fg_color="transparent")
         header_frame.pack(fill="x", padx=20, pady=10)
 
-        # Arrow Back Button
+        # Arrow Button
         arrow_path = os.path.join(self.controller.assets_dir, "arrow.png")
         try:
             arrow_img = ctk.CTkImage(light_image=Image.open(arrow_path), size=(40, 40))
@@ -40,7 +39,7 @@ class AirGuitarPage(ctk.CTkFrame):
         )
         self.mode_label.pack(side="left", padx=20)
 
-        # Camera Container
+        # Camera
         self.cam_container = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
         self.cam_container.pack(fill="both", expand=True, padx=0, pady=(0, 20))
 
@@ -51,8 +50,8 @@ class AirGuitarPage(ctk.CTkFrame):
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
         
-        # --- UPDATED MODES LIST ---
-        self.MODES = ["major", "minor", "m7", "maj7", "7"] # Added "7"
+        # --- UPDATE 1: ADDED "7" TO MODES ---
+        self.MODES = ["major", "minor", "m7", "maj7", "7"] 
         self.NOTES = ["c", "d", "e", "f", "g", "a", "b"]
         self.sounds = {}
         self.current_mode = "major"
@@ -65,6 +64,7 @@ class AirGuitarPage(ctk.CTkFrame):
         for mode in self.MODES:
             self.sounds[mode] = {}
             for note in self.NOTES:
+                # This will look for c_7.wav, d_7.wav, etc.
                 filename = f"{note}_{mode}.wav"
                 path = os.path.join(self.controller.audio_dir, filename)
                 if os.path.exists(path):
@@ -121,9 +121,9 @@ class AirGuitarPage(ctk.CTkFrame):
         
         h, w, c = frame.shape 
         
-        # Dimensions
-        BUTTON_H = int(h * 0.12) # Slightly smaller to fit 5 buttons
-        BUTTON_W = int(w * 0.12)
+        # Dimensions (Adjusted for 5 buttons)
+        BUTTON_H = int(h * 0.12)
+        BUTTON_W = int(w * 0.12) 
         BUTTON_Y = 20
         BUTTON_GAP = 15
         BUTTON_START_X = 20
@@ -137,7 +137,7 @@ class AirGuitarPage(ctk.CTkFrame):
         image_rgb.flags.writeable = False
         results = self.pose.process(image_rgb)
         
-        # 1. Draw Mode Buttons
+        # Draw Buttons
         self.buttons = []
         for i, mode in enumerate(self.MODES):
             x = BUTTON_START_X + (i * (BUTTON_W + BUTTON_GAP))
@@ -148,7 +148,7 @@ class AirGuitarPage(ctk.CTkFrame):
             center_y = BUTTON_Y + BUTTON_H/2
             self.draw_centered_text(frame, mode, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
 
-        # 2. Draw Fretboard
+        # Draw Fretboard
         cv2.rectangle(frame, (NECK_X_START, NECK_Y_START), (NECK_X_START + NECK_WIDTH, NECK_Y_START + NECK_HEIGHT), (200, 200, 200), 2)
         zone_width = NECK_WIDTH / len(self.NOTES)
         for i in range(len(self.NOTES)):
@@ -160,7 +160,7 @@ class AirGuitarPage(ctk.CTkFrame):
             center_y = NECK_Y_START + NECK_HEIGHT/2
             self.draw_centered_text(frame, note_label, center_x, center_y, cv2.FONT_HERSHEY_SIMPLEX, 0.8, (100, 255, 100), 2)
 
-        # 3. Draw Strum Line
+        # Draw Strum Line
         s_start = int(w * 0.7)
         cv2.line(frame, (s_start, STRUM_Y), (w, STRUM_Y), (0, 0, 255), 4)
 

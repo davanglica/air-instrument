@@ -7,32 +7,40 @@ from pages.main_menu import MainMenu
 from pages.air_guitar_page import AirGuitarPage
 from pages.song_selection_page import SongSelectionPage
 from pages.lyric_guitar_page import LyricGuitarPage
+from pages.about_device_page import AboutDevicePage # <--- NEW IMPORT
 
 class MusicApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # --- FIX 1: FORCE SCALING TO 100% ---
-        # This prevents the "huge font" issue on small screens
+        # Force Scaling for small screens
         ctk.set_widget_scaling(1.0)
         ctk.set_window_scaling(1.0)
 
         self.title("どこでも楽器")
-        
-        # --- FIX 2: MATCH SCREEN RESOLUTION ---
-        # 1024x600 is your exact screen size
         self.geometry("1024x600")
         
-        # Optional: Uncomment this if you want to force full screen without window bars
-        # self.attributes('-fullscreen', True) 
+        # --- FEATURE 1: FORCE FULL SCREEN ---
+        self.attributes('-fullscreen', True)
+        
+        # Bind Escape key to exit fullscreen (Optional, useful for debugging)
+        self.bind("<Escape>", lambda event: self.attributes("-fullscreen", False))
 
         ctk.set_appearance_mode("light")
 
         # --- PATH SETUP ---
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Assets (Images)
         self.assets_dir = os.path.join(self.base_dir, "assets", "images")
+        if not os.path.exists(self.assets_dir):
+            self.assets_dir = os.path.join(self.base_dir, "assets")
+
+        # Audio (Air Guitar)
         self.audio_dir = os.path.join(self.base_dir, "air_guitar", "audio")
-        self.lyrics_dir = os.path.join(self.base_dir, "search-function", "lyrics")
+
+        # Lyrics
+        self.lyrics_dir = os.path.join(self.base_dir, "lyrics") 
         
         pygame.mixer.init()
 
@@ -43,7 +51,8 @@ class MusicApp(ctk.CTk):
         self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, MainMenu, AirGuitarPage, SongSelectionPage, LyricGuitarPage):
+        # Added AboutDevicePage to the list
+        for F in (StartPage, MainMenu, AirGuitarPage, SongSelectionPage, LyricGuitarPage, AboutDevicePage):
             page_name = F.__name__
             frame = F(parent=self.container, controller=self)
             self.frames[page_name] = frame
@@ -52,11 +61,13 @@ class MusicApp(ctk.CTk):
         self.show_frame("StartPage")
 
     def show_frame(self, page_name):
+        # Stop cameras if running
         if "AirGuitarPage" in self.frames:
             self.frames["AirGuitarPage"].stop_camera()
         if "LyricGuitarPage" in self.frames:
             self.frames["LyricGuitarPage"].stop_camera()
 
+        # Start camera if needed
         if page_name == "AirGuitarPage":
             self.frames["AirGuitarPage"].start_camera()
         elif page_name == "LyricGuitarPage":
@@ -64,6 +75,10 @@ class MusicApp(ctk.CTk):
 
         frame = self.frames[page_name]
         frame.tkraise()
+
+    def quit_app(self):
+        """Clean shutdown of the application"""
+        self.destroy()
 
 if __name__ == "__main__":
     app = MusicApp()
