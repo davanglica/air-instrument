@@ -1,0 +1,435 @@
+{
+  "meta": {
+    "title": "Viva La Vida",
+    "artist": "Coldplay",
+    "transition_time": 1.0,
+    "chords_used": [
+      "C",
+      "D",
+      "G",
+      "Em"
+    ]
+  },
+  "lyrics": [
+    {
+      "text": "I used to rule the world",
+      "chords": {
+        "2": "C",
+        "12": "D"
+      }
+    },
+    {
+      "text": "Seas would rise when I gave the word",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "Now in the morning, I sleep alone",
+      "chords": {
+        "0": "C",
+        "20": "D"
+      }
+    },
+    {
+      "text": "Sweep the streets I used to own",
+      "chords": {
+        "0": "G",
+        "20": "Em"
+      }
+    },
+    {
+      "text": "I used to roll the dice",
+      "chords": {
+        "2": "C",
+        "12": "D"
+      }
+    },
+    {
+      "text": "Feel the fear in my enemy's eyes",
+      "chords": {
+        "0": "G",
+        "20": "Em"
+      }
+    },
+    {
+      "text": "Listen as the crowd would sing",
+      "chords": {
+        "0": "C",
+        "22": "D"
+      }
+    },
+    {
+      "text": "Now the old king is dead, long live the king",
+      "chords": {
+        "0": "G",
+        "31": "Em"
+      }
+    },
+    {
+      "text": "One minute I held the key",
+      "chords": {
+        "0": "C",
+        "18": "D"
+      }
+    },
+    {
+      "text": "Next the walls were closed on me",
+      "chords": {
+        "0": "G",
+        "26": "Em"
+      }
+    },
+    {
+      "text": "And I discovered that my castles stand",
+      "chords": {
+        "0": "C",
+        "25": "D"
+      }
+    },
+    {
+      "text": "Upon pillars of salt and pillars of sand",
+      "chords": {
+        "0": "G",
+        "25": "Em"
+      }
+    },
+    {
+      "text": "I hear Jerusalem bells are ringing",
+      "chords": {
+        "7": "C",
+        "23": "D"
+      }
+    },
+    {
+      "text": "Roman Cavalry choirs are singing",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "Be my mirror, my sword and shield",
+      "chords": {
+        "0": "C",
+        "17": "D"
+      }
+    },
+    {
+      "text": "My missionaries in a foreign field",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "For some reason I can't explain",
+      "chords": {
+        "0": "C",
+        "22": "D"
+      }
+    },
+    {
+      "text": "Once you go there was never,",
+      "chords": {
+        "0": "G",
+        "22": "Em"
+      }
+    },
+    {
+      "text": "never an honest word",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "And that was when I ruled the world",
+      "chords": {
+        "9": "G",
+        "26": "Em"
+      }
+    },
+    {
+      "text": "It was a wicked and wild wind",
+      "chords": {
+        "9": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Blew down the doors to let me in",
+      "chords": {
+        "0": "G",
+        "23": "Em"
+      }
+    },
+    {
+      "text": "Shattered windows and the sound of drums",
+      "chords": {
+        "0": "C",
+        "26": "D"
+      }
+    },
+    {
+      "text": "People couldn't believe what I'd become",
+      "chords": {
+        "0": "G",
+        "29": "Em"
+      }
+    },
+    {
+      "text": "Revolutionaries wait",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "For my head on a silver plate",
+      "chords": {
+        "0": "G",
+        "19": "Em"
+      }
+    },
+    {
+      "text": "Just a puppet on a lonely string",
+      "chords": {
+        "0": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Oh, who would ever want to be king?",
+      "chords": {
+        "0": "G",
+        "26": "Em"
+      }
+    },
+        {
+      "text": "I hear Jerusalem bells are ringing",
+      "chords": {
+        "7": "C",
+        "23": "D"
+      }
+    },
+    {
+      "text": "Roman Cavalry choirs are singing",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "Be my mirror, my sword and shield",
+      "chords": {
+        "0": "C",
+        "17": "D"
+      }
+    },
+    {
+      "text": "My missionaries in a foreign field",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "For some reason I can't explain",
+      "chords": {
+        "0": "C",
+        "22": "D"
+      }
+    },
+    {
+      "text": "Once you go there was never,",
+      "chords": {
+        "0": "G",
+        "22": "Em"
+      }
+    },
+    {
+      "text": "never an honest word",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "And that was when I ruled the world",
+      "chords": {
+        "9": "G",
+        "26": "Em"
+      }
+    },
+    {
+      "text": "It was a wicked and wild wind",
+      "chords": {
+        "9": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Blew down the doors to let me in",
+      "chords": {
+        "0": "G",
+        "23": "Em"
+      }
+    },
+    {
+      "text": "Shattered windows and the sound of drums",
+      "chords": {
+        "0": "C",
+        "26": "D"
+      }
+    },
+    {
+      "text": "People couldn't believe what I'd become",
+      "chords": {
+        "0": "G",
+        "29": "Em"
+      }
+    },
+    {
+      "text": "Revolutionaries wait",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "For my head on a silver plate",
+      "chords": {
+        "0": "G",
+        "19": "Em"
+      }
+    },
+    {
+      "text": "Just a puppet on a lonely string",
+      "chords": {
+        "0": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Oh, who would ever want to be king?",
+      "chords": {
+        "0": "G",
+        "26": "Em"
+      }
+    },
+        {
+      "text": "I hear Jerusalem bells are ringing",
+      "chords": {
+        "7": "C",
+        "23": "D"
+      }
+    },
+    {
+      "text": "Roman Cavalry choirs are singing",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "Be my mirror, my sword and shield",
+      "chords": {
+        "0": "C",
+        "17": "D"
+      }
+    },
+    {
+      "text": "My missionaries in a foreign field",
+      "chords": {
+        "0": "G",
+        "21": "Em"
+      }
+    },
+    {
+      "text": "For some reason I can't explain",
+      "chords": {
+        "0": "C",
+        "22": "D"
+      }
+    },
+    {
+      "text": "Once you go there was never,",
+      "chords": {
+        "0": "G",
+        "22": "Em"
+      }
+    },
+    {
+      "text": "never an honest word",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "And that was when I ruled the world",
+      "chords": {
+        "9": "G",
+        "26": "Em"
+      }
+    },
+    {
+      "text": "It was a wicked and wild wind",
+      "chords": {
+        "9": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Blew down the doors to let me in",
+      "chords": {
+        "0": "G",
+        "23": "Em"
+      }
+    },
+    {
+      "text": "Shattered windows and the sound of drums",
+      "chords": {
+        "0": "C",
+        "26": "D"
+      }
+    },
+    {
+      "text": "People couldn't believe what I'd become",
+      "chords": {
+        "0": "G",
+        "29": "Em"
+      }
+    },
+    {
+      "text": "Revolutionaries wait",
+      "chords": {
+        "0": "C",
+        "16": "D"
+      }
+    },
+    {
+      "text": "For my head on a silver plate",
+      "chords": {
+        "0": "G",
+        "19": "Em"
+      }
+    },
+    {
+      "text": "Just a puppet on a lonely string",
+      "chords": {
+        "0": "C",
+        "19": "D"
+      }
+    },
+    {
+      "text": "Oh, who would ever want to be king?",
+      "chords": {
+        "0": "G",
+        "26": "Em"
+      }
+    }
+  ]
+}

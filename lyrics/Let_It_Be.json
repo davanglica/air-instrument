@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "title": "Let It Be",
+    "artist": "The Beatles",
+    "transition_time": 1.0,
+    "chords_used": [
+      "G",
+      "D",
+      "Em",
+      "C"
+    ]
+  },
+  "lyrics": [
+    {
+      "text": "When I find myself in times of trouble mother Mary comes to me",
+      "chords": {
+        "0": "G",
+        "19": "D",
+        "39": "Em",
+        "51": "C"
+      }
+    },
+    {
+      "text": "Speaking words of wisdom, let it be,",
+      "chords": {
+        "0": "G",
+        "15": "D",
+        "26": "C",
+        "34": "G"
+      }
+    },
+    {
+      "text": "And in my hour of darkness she is standing right in front of me",
+      "chords": {
+        "0": "G",
+        "18": "D",
+        "34": "Em",
+        "56": "C"
+      }
+    },
+    {
+      "text": "Speaking words of wisdom, let it be,",
+      "chords": {
+        "0": "G",
+        "15": "D",
+        "26": "C",
+        "34": "G"
+      }
+    },
+    {
+      "text": "Let it be, Let it be, Let it be, Let it be",
+      "chords": {
+        "0": "Em",
+        "11": "D",
+        "22": "C",
+        "33": "G"
+      }
+    },
+    {
+      "text": "Whisper words of wisdom, let it be",
+      "chords": {
+        "0": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "And when the broken hearted people living in the world agree",
+      "chords": {
+        "0": "G",
+        "28": "D",
+        "45": "Em",
+        "55": "C"
+      }
+    },
+    {
+      "text": "There will be an answer, let it be",
+      "chords": {
+        "0": "G",
+        "17": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "For though they may be parted there is still a chance that they will see",
+      "chords": {
+        "0": "G",
+        "30": "D",
+        "53": "Em",
+        "69": "C"
+      }
+    },
+    {
+      "text": "There will be an answer, let it be",
+      "chords": {
+        "0": "G",
+        "17": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "Let it be, Let it be, Let it be, Let it be",
+      "chords": {
+        "0": "Em",
+        "11": "D",
+        "22": "C",
+        "33": "G"
+      }
+    },
+    {
+      "text": "There will be an answer, let it be",
+      "chords": {
+        "0": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "Let it be, Let it be, Let it be, Let it be",
+      "chords": {
+        "0": "Em",
+        "11": "D",
+        "22": "C",
+        "33": "G"
+      }
+    },
+    {
+      "text": "Whisper words of wisdom, let it be",
+      "chords": {
+        "0": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "And when the night is cloudy, there is still a light that shines on me",
+      "chords": {
+        "0": "G",
+        "30": "D",
+        "52": "Em",
+        "68": "C"
+      }
+    },
+    {
+      "text": "Shine until tomorrow, let it be",
+      "chords": {
+        "0": "G",
+        "22": "D",
+        "29": "C",
+        "36": "G"
+      }
+    },
+    {
+      "text": "I wake up to the sound of music mother Mary comes to me",
+      "chords": {
+        "0": "G",
+        "32": "D",
+        "48": "Em",
+        "62": "C"
+      }
+    },
+    {
+      "text": "Speaking words of wisdom, let it be",
+      "chords": {
+        "0": "G",
+        "15": "D",
+        "26": "C",
+        "34": "G"
+      }
+    },
+    {
+      "text": "Let it be, Let it be, Let it be, Let it be",
+      "chords": {
+        "0": "Em",
+        "11": "D",
+        "22": "C",
+        "33": "G"
+      }
+    },
+    {
+      "text": "There will be an answer, let it be",
+      "chords": {
+        "0": "D",
+        "25": "C",
+        "32": "G"
+      }
+    },
+    {
+      "text": "Let it be, Let it be, Let it be, Let it be",
+      "chords": {
+        "0": "Em",
+        "11": "D",
+        "22": "C",
+        "33": "G"
+      }
+    },
+    {
+      "text": "Whisper words of wisdom, let it be",
+      "chords": {
+        "0": "D",
+        "25": "C",
+        "32": "G"
+      }
+    }
+  ]
+}

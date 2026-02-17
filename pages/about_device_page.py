@@ -8,27 +8,48 @@ class AboutDevicePage(ctk.CTkFrame):
         super().__init__(parent, fg_color="#FFF0E0")
         self.controller = controller
 
-        # --- MAIN CONTENT ---
-        # Title (Top Left)
-        title = ctk.CTkLabel(self, text="どこでも楽器", font=("HG丸ｺﾞｼｯｸM-PRO", 32, "bold"), text_color="#F2A93B")
-        title.place(relx=0.1, rely=0.15, anchor="w")
-        underline = ctk.CTkFrame(self, height=3, width=220, fg_color="#F2A93B")
-        underline.place(relx=0.1, rely=0.21, anchor="w")
+        # --- HEADER (Text Title) ---
+        # Reverted to text as requested
+        title = ctk.CTkLabel(
+            self, 
+            text="どこでも楽器", 
+            font=("HG丸ｺﾞｼｯｸM-PRO", 32, "bold"), 
+            text_color="#F2A93B"
+        )
+        title.place(relx=0.1, rely=0.1, anchor="w")
 
-        # Subtitle (Center)
-        subtitle = ctk.CTkLabel(self, text="デバイスについて", font=("HG丸ｺﾞｼｯｸM-PRO", 28, "bold"), text_color="#FA8072") # Salmon color
-        subtitle.place(relx=0.5, rely=0.3, anchor="center")
+        # --- SUBTITLE ---
+        subtitle = ctk.CTkLabel(
+            self, 
+            text="デバイスについて", 
+            font=("HG丸ｺﾞｼｯｸM-PRO", 28, "bold"), 
+            text_color="#555555" 
+        ) 
+        subtitle.place(relx=0.5, rely=0.25, anchor="center")
 
-        # Body Text (Center)
+        # --- CREDITS TEXT ---
+        credits_text = (
+            "R7創造設計 2班\n"
+            "プロジェクトリーダー：岩田　凌旺\n\n"
+            "ソフトウェア担当：\n"
+            "・アンジェリカ　ダヴィナ\n"
+            "・齋藤　錬太朗\n\n"
+            "ハードウェア担当：\n"
+            "・荒井　良斗\n"
+            "・吉見　秋亮\n"
+            "・生島　遊"
+        )
+
         body_text = ctk.CTkLabel(
             self, 
-            text="text here for later", 
-            font=("HG丸ｺﾞｼｯｸM-PRO", 24, "bold"), 
-            text_color="#FA8072"
+            text=credits_text, 
+            font=("HG丸ｺﾞｼｯｸM-PRO", 15, "bold"), 
+            text_color="#555555", 
+            justify="left"
         )
-        body_text.place(relx=0.5, rely=0.5, anchor="center")
+        body_text.place(relx=0.5, rely=0.60, anchor="center")
 
-        # --- FEATURE 3: SECRET DOOR ---
+        # --- SECRET DOOR ---
         door_path = os.path.join(controller.assets_dir, "door.png")
         try:
             door_img = ctk.CTkImage(light_image=Image.open(door_path), size=(60, 100))
@@ -46,8 +67,7 @@ class AboutDevicePage(ctk.CTkFrame):
         )
         self.door_btn.place(relx=0.9, rely=0.85, anchor="center")
 
-        # Back Button (To return to main menu)
-        # Using the same arrow style as other pages
+        # --- BACK BUTTON ---
         arrow_path = os.path.join(controller.assets_dir, "arrow.png")
         try:
             arrow_img = ctk.CTkImage(light_image=Image.open(arrow_path), size=(40, 40))
@@ -62,12 +82,9 @@ class AboutDevicePage(ctk.CTkFrame):
         self.back_btn.place(relx=0.05, rely=0.05, anchor="nw")
 
     def prompt_admin_password(self):
-        # Create a custom dialog or use simpledialog
-        password = ctk.CTkInputDialog(text="Enter Admin Password:", title="Admin Access").get_input()
+        password = simpledialog.askstring("Admin Access", "Enter Password:", parent=self)
         
         if password == "1111":
-            # Correct Password -> Shut Down
             self.controller.quit_app()
         elif password is not None:
-            # Wrong Password (ignore cancel)
             print("Wrong password entered")

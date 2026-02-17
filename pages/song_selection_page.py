@@ -10,6 +10,13 @@ class SongSelectionPage(ctk.CTkFrame):
         
         self.selected_filename = None
         self.row_widgets = {}
+        self.is_navigating = False 
+
+        # --- SCROLL STATE ---
+        self.drag_start_y = 0
+        self.start_fraction = 0.0
+        self.is_scrolling = False
+        self.scroll_locked = False # New Lock Flag
 
         # --- HEADER ---
         header_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -35,16 +42,27 @@ class SongSelectionPage(ctk.CTkFrame):
         self.scroll_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
         self.scroll_frame.pack(fill="both", expand=True, padx=20, pady=(0, 20))
 
+        # Access the underlying Canvas
+        self.canvas = self.scroll_frame._parent_canvas
+
         self.load_song_list()
 
     def load_song_list(self):
         for widget in self.scroll_frame.winfo_children(): widget.destroy()
         self.row_widgets = {}
         self.selected_filename = None
+        self.is_navigating = False
+        self.scroll_locked = False
 
         if not os.path.exists(self.controller.lyrics_dir): return
 
         files = [f for f in os.listdir(self.controller.lyrics_dir) if f.endswith(".json")]
+        
+        pinned_song = "Twinkle_Twinkle_Little_Star.json" 
+        if pinned_song in files:
+            files.remove(pinned_song) 
+            files.insert(0, pinned_song) 
+
         if not files:
             ctk.CTkLabel(self.scroll_frame, text="No songs found.", text_color="#555").pack()
             return
@@ -61,7 +79,7 @@ class SongSelectionPage(ctk.CTkFrame):
             except: pass
 
     def create_song_row(self, index, title, artist, filename):
-        # FIX: Increased height from 70 to 85
+        # Frame with takefocus=False to prevent auto-scroll jumps
         row_frame = ctk.CTkFrame(self.scroll_frame, fg_color="white", corner_radius=10, height=110)
         row_frame.pack(fill="x", pady=6, padx=5)
         row_frame.pack_propagate(False) 
@@ -76,26 +94,77 @@ class SongSelectionPage(ctk.CTkFrame):
         text_frame = ctk.CTkFrame(row_frame, fg_color="transparent")
         text_frame.pack(side="left", fill="both", expand=True, padx=10)
 
-        # Title (Added top padding)
         title_label = ctk.CTkLabel(text_frame, text=title, font=("HG丸ｺﾞｼｯｸM-PRO", 22, "bold"), text_color="black", anchor="w")
         title_label.pack(fill="x", pady=(12, 0))
 
-        # Artist (Added bottom padding)
         artist_label = ctk.CTkLabel(text_frame, text=artist, font=("HG丸ｺﾞｼｯｸM-PRO", 16), text_color="gray", anchor="w")
         artist_label.pack(fill="x", pady=(0, 12))
 
-        # Click Logic
-        def on_click(event): self.handle_row_click(filename)
-        for w in [row_frame, index_label, text_frame, title_label, artist_label]:
-            w.bind("<Button-1>", on_click)
+        # --- BINDINGS ---
+        elements = [row_frame, index_label, text_frame, title_label, artist_label]
+        
+        for element in elements:
+            element.bind("<Button-1>", lambda e: self.on_touch_start(e))
+            element.bind("<B1-Motion>", lambda e: self.on_touch_drag(e))
+            element.bind("<ButtonRelease-1>", lambda e, fn=filename: self.on_touch_release(e, fn))
+
+    def on_touch_start(self, event):
+        # If locked (selection in progress), ignore everything
+        if self.scroll_locked: return
+
+        self.drag_start_y = event.y_root
+        self.is_scrolling = False
+        self.start_fraction = self.canvas.yview()[0]
+
+    def on_touch_drag(self, event):
+        # If locked, DO NOT SCROLL
+        if self.scroll_locked: return
+
+        pixel_delta = self.drag_start_y - event.y_root
+        
+        if abs(pixel_delta) > 5:
+            self.is_scrolling = True
+            bbox = self.canvas.bbox("all")
+            if not bbox: return
+            content_height = bbox[3]
+            if content_height < 1: content_height = 1
+
+            fraction_delta = pixel_delta / content_height
+            new_pos = self.start_fraction + fraction_delta
+            
+            # Clamp value
+            if new_pos < 0: new_pos = 0
+            if new_pos > 1: new_pos = 1
+            
+            self.canvas.yview_moveto(new_pos)
+
+    def on_touch_release(self, event, filename):
+        if self.scroll_locked: return
+        if not self.is_scrolling:
+            self.handle_row_click(filename)
 
     def handle_row_click(self, filename):
-        if self.selected_filename == filename:
-            self.controller.frames["LyricGuitarPage"].load_song_json(filename)
-            self.controller.show_frame("LyricGuitarPage")
-        else:
-            if self.selected_filename and self.selected_filename in self.row_widgets:
-                self.row_widgets[self.selected_filename].configure(fg_color="white")
-            self.selected_filename = filename
-            if filename in self.row_widgets:
-                self.row_widgets[filename].configure(fg_color="#FFE4C4")
+        if self.is_navigating: return
+
+        self.is_navigating = True
+        self.scroll_locked = True # LOCK SCROLLING INSTANTLY
+        
+        # 1. Reset previous
+        if self.selected_filename and self.selected_filename in self.row_widgets:
+            self.row_widgets[self.selected_filename].configure(fg_color="white")
+        
+        # 2. Highlight new
+        self.selected_filename = filename
+        if filename in self.row_widgets:
+            self.row_widgets[filename].configure(fg_color="#F2A93B")
+        
+        # 3. Wait and Transition
+        self.after(1000, lambda: self.transition_to_song(filename))
+
+    def transition_to_song(self, filename):
+        self.controller.frames["LyricGuitarPage"].load_song_json(filename)
+        self.controller.show_frame("LyricGuitarPage")
+        
+        # Reset states
+        self.is_navigating = False
+        self.scroll_locked = False

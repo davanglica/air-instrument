@@ -1,0 +1,225 @@
+{
+    "meta": {
+        "title": "Just the Two of Us",
+        "artist": "Bill Withers & Grover Washington Jr.",
+        "transition_time": 1.0,
+        "chords_used": ["Cmaj7", "B7", "Em7", "Ebm7", "Dm7", "G7"]
+    },
+    "lyrics": [
+        {
+            "text": "[Verse 1]",
+            "chords": {}
+        },
+        {
+            "text": "I see the crystal raindrops fall",
+            "chords": {
+                "0": "Cmaj7",
+                "15": "B7",
+                "33": "Em7"
+            }
+        },
+        {
+            "text": "And the beauty of it all",
+            "chords": {
+                "8": "Dm7",
+                "16": "G7",
+                "23": "Cmaj7"
+            }
+        },
+        {
+            "text": "Is when the sun comes shining through",
+            "chords": {
+                "12": "B7",
+                "35": "Em7"
+            }
+        },
+        {
+            "text": "To make those rainbows in my mind",
+            "chords": {
+                "0": "Cmaj7",
+                "18": "B7",
+                "31": "Em7"
+            }
+        },
+        {
+            "text": "When I think of you sometime",
+            "chords": {
+                "7": "Dm7",
+                "18": "G7",
+                "27": "Cmaj7"
+            }
+        },
+        {
+            "text": "And I wanna spend some time with you",
+            "chords": {
+                "12": "B7",
+                "34": "Em7"
+            }
+        },
+        {
+            "text": "[Verse 2]",
+            "chords": {}
+        },
+        {
+            "text": "We look for love, no time for tears",
+            "chords": {
+                "0": "Cmaj7",
+                "15": "B7",
+                "30": "Em7"
+            }
+        },
+        {
+            "text": "Wasted water's all that is",
+            "chords": {
+                "8": "Dm7",
+                "16": "G7",
+                "23": "Cmaj7"
+            }
+        },
+        {
+            "text": "And it don't make no flowers grow",
+            "chords": {
+                "12": "B7",
+                "31": "Em7"
+            }
+        },
+        {
+            "text": "Good things might come to those who wait",
+            "chords": {
+                "0": "Cmaj7",
+                "18": "B7",
+                "36": "Em7"
+            }
+        },
+        {
+            "text": "But not for those who wait too late",
+            "chords": {
+                "8": "Dm7",
+                "16": "G7",
+                "23": "Cmaj7"
+            }
+        },
+        {
+            "text": "We gotta go for all we know",
+            "chords": {
+                "10": "B7",
+                "25": "Em7"
+            }
+        },
+        {
+            "text": "[Chorus]",
+            "chords": {}
+        },
+        {
+            "text": "Just the two of us, we can make it if we try",
+            "chords": {
+                "8": "Cmaj7",
+                "18": "B7",
+                "27": "Em7",
+                "33": "Ebm7",
+                "38": "Dm7"
+            }
+        },
+        {
+            "text": "Just the two of us (just the two of us)",
+            "chords": {
+                "0": "G7",
+                "8": "Cmaj7",
+                "16": "B7",
+                "28": "Em7"
+            }
+        },
+        {
+            "text": "[Verse 3]",
+            "chords": {}
+        },
+        {
+            "text": "I hear the crystal raindrops fall",
+            "chords": {
+                "0": "Cmaj7",
+                "15": "B7",
+                "33": "Em7"
+            }
+        },
+        {
+            "text": "On the window down the hall",
+            "chords": {
+                "3": "Dm7",
+                "15": "G7",
+                "22": "Cmaj7"
+            }
+        },
+        {
+            "text": "And it becomes the morning dew",
+            "chords": {
+                "12": "B7",
+                "32": "Em7"
+            }
+        },
+        {
+            "text": "And darling, when the morning comes",
+            "chords": {
+                "4": "Cmaj7",
+                "18": "B7",
+                "34": "Em7"
+            }
+        },
+        {
+            "text": "And I see the morning sun",
+            "chords": {
+                "7": "Dm7",
+                "18": "G7",
+                "27": "Cmaj7"
+            }
+        },
+        {
+            "text": "I wanna be the one with you",
+            "chords": {
+                "10": "B7",
+                "26": "Em7"
+            }
+        },
+        {
+            "text": "[Chorus]",
+            "chords": {}
+        },
+        {
+            "text": "Just the two of us, we can make it if we try",
+            "chords": {
+                "8": "Cmaj7",
+                "18": "B7",
+                "27": "Em7",
+                "33": "Ebm7",
+                "38": "Dm7"
+            }
+        },
+        {
+            "text": "Just the two of us (just the two of us)",
+            "chords": {
+                "0": "G7",
+                "8": "Cmaj7",
+                "16": "B7",
+                "28": "Em7"
+            }
+        },
+        {
+            "text": "Just the two of us, building big castles way on high",
+            "chords": {
+                "8": "Cmaj7",
+                "18": "B7",
+                "27": "Em7",
+                "34": "Ebm7",
+                "39": "Dm7"
+            }
+        },
+        {
+            "text": "Just the two of us, you and I",
+            "chords": {
+                "0": "G7",
+                "8": "Cmaj7",
+                "16": "B7",
+                "28": "Em7"
+            }
+        }
+    ]
+}

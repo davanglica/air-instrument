@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "title": "Stand By Me",
+    "artist": "Ben E. King",
+    "transition_time": 1.0,
+    "chords_used": [
+      "G",
+      "Em",
+      "C",
+      "D"
+    ]
+  },
+  "lyrics": [
+    {
+      "text": "                ",
+      "chords": {
+        "0": "G",
+        "4": "G",
+        "8": "Em",
+        "12": "Em"
+      }
+    },
+    {
+      "text": "                ",
+      "chords": {
+        "0": "C",
+        "4": "D",
+        "8": "G",
+        "12": "G"
+      }
+    },
+    {
+      "text": "When the night has come and the land is dark",
+      "chords": {
+        "9": "G",
+        "19": "G",
+        "38": "Em",
+        "50": "Em"
+      }
+    },
+    {
+      "text": "And the moon is the only light we'll see",
+      "chords": {
+        "8": "C",
+        "20": "D",
+        "37": "G",
+        "40": "G"
+      }
+    },
+    {
+      "text": "No, I won't be afraid, no, I won't be afraid",
+      "chords": {
+        "6": "G",
+        "20": "G",
+        "29": "Em",
+        "42": "Em"
+      }
+    },
+    {
+      "text": "Just as long as you stand, stand by me",
+      "chords": {
+        "8": "C",
+        "20": "D",
+        "31": "G",
+        "40": "G"
+      }
+    },
+    {
+      "text": "So darlin', darlin'",
+      "chords": {
+        "0": "G",
+        "12": "G"
+      }
+    },
+    {
+      "text": "Stand by me, oh, stand by me",
+      "chords": {
+        "0": "Em",
+        "17": "Em"
+      }
+    },
+    {
+      "text": "Oh, stand, stand by me, stand by me",
+      "chords": {
+        "4": "C",
+        "11": "D",
+        "24": "G",
+        "34": "G"
+      }
+    },
+    {
+      "text": "If the sky that we look upon should tumble and fall",
+      "chords": {
+        "7": "G",
+        "22": "G",
+        "36": "Em",
+        "55": "Em"
+      }
+    },
+    {
+      "text": "Or the mountains should crumble to the sea",
+      "chords": {
+        "7": "C",
+        "22": "D",
+        "39": "G",
+        "42": "G"
+      }
+    },
+    {
+      "text": "I won't cry, I won't cry, no, I won't shed a tear",
+      "chords": {
+        "0": "G",
+        "13": "G",
+        "32": "Em",
+        "46": "Em"
+      }
+    },
+    {
+      "text": "Just as long as you stand, stand by me",
+      "chords": {
+        "8": "C",
+        "20": "D",
+        "31": "G",
+        "37": "G"
+      }
+    },
+    {
+      "text": "And darling, darling",
+      "chords": {
+        "4": "G",
+        "13": "G"
+      }
+    },
+    {
+      "text": "Stand by me, oh, stand by me",
+      "chords": {
+        "0": "Em",
+        "17": "Em"
+      }
+    },
+    {
+      "text": "Oh, stand now, stand by me, stand by me",
+      "chords": {
+        "4": "C",
+        "15": "D",
+        "28": "G",
+        "38": "G"
+      }
+    },
+    {
+      "text": "                ",
+      "chords": {
+        "0": "G",
+        "4": "G",
+        "8": "Em",
+        "12": "Em"
+      }
+    },
+    {
+      "text": "                ",
+      "chords": {
+        "0": "C",
+        "4": "D",
+        "8": "G",
+        "12": "G"
+      }
+    },
+    {
+      "text": "                ",
+      "chords": {
+        "0": "G",
+        "4": "G",
+        "8": "Em",
+        "12": "Em"
+      }
+    },
+    {
+      "text": "                ",
+      "chords": {
+        "0": "C",
+        "4": "D",
+        "8": "G"
+      }
+    },
+    {
+      "text": "Darling, darling",
+      "chords": {
+        "0": "G"
+      }
+    },
+    {
+      "text": "Stand by me, oh, stand by me",
+      "chords": {
+        "0": "G",
+        "13": "G",
+        "17": "Em",
+        "29": "Em"
+      }
+    },
+    {
+      "text": "Oh, stand now, stand by me, stand by me",
+      "chords": {
+        "4": "C",
+        "15": "D",
+        "28": "G"
+      }
+    },
+    {
+      "text": "Whenever you're in trouble won't you",
+      "chords": {
+        "0": "G"
+      }
+    },
+    {
+      "text": "Stand by me, oh, stand by me",
+      "chords": {
+        "0": "G",
+        "12": "G",
+        "17": "Em",
+        "29": "Em"
+      }
+    },
+    {
+      "text": "Oh, stand now, oh, stand, stand by me",
+      "chords": {
+        "4": "C",
+        "19": "D",
+        "32": "G"
+      }
+    }
+  ]
+}
